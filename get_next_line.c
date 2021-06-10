@@ -1,5 +1,14 @@
 #include "get_next_line.h"
 
+/**
+ * @brief Returns a pointer to the
+ * first occurrence of the character c in the string s.
+ *
+ * @param s Pointer to the string memory area
+ * @param c Character to be searched inside the string s
+ * @return char* Return a pointer to the matched character
+ * or NULL if the character is not found.
+ */
 static char	*ft_strchr(const char *s, int c)
 {
 	if (c > 127)
@@ -15,12 +24,17 @@ static char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-static void	free_heap(char **lst)
+/**
+ * @brief Frees the heap allocated memory and assigns heap value to NULL.
+ *
+ * @param heap Pointer to the area of memory to free and NULL-assign
+ */
+static void	nullify_heap(char **heap)
 {
-	if (*lst && lst)
+	if (*heap && heap)
 	{
-		free(*lst);
-		*lst = NULL;
+		free(*heap);
+		*heap = NULL;
 	}
 }
 
@@ -35,7 +49,7 @@ static int	get_line(int read_bytes, char **heap, char **line)
 	else if (read_bytes == 0 && *heap[0] == '\0')
 	{
 		*line = ft_strdup("");
-		free_heap(heap);
+		nullify_heap(heap);
 		return (0);
 	}
 	while ((*heap)[i] != '\n' && (*heap)[i] != '\0')
@@ -52,15 +66,6 @@ static int	get_line(int read_bytes, char **heap, char **line)
 	return (0);
 }
 
-static int	bad_params(int fd, char **line, char *heap, char *buffer)
-{
-	return (!buffer
-		|| !heap[fd]
-		|| !line
-		|| fd < 0
-		|| BUFFER_SIZE < 1);
-}
-
 int	get_next_line(int fd, char **line)
 {
 	int			read_bytes;
@@ -71,7 +76,7 @@ int	get_next_line(int fd, char **line)
 	if (!heap[fd])
 		heap[fd] = ft_strdup("");
 	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (bad_params(fd, line, heap, buffer))
+	if (!buffer || !line || fd < 0 || BUFFER_SIZE < 1)
 		return (-1);
 	read_bytes = (int)read(fd, buffer, BUFFER_SIZE);
 	if (read_bytes < 0)
@@ -80,7 +85,7 @@ int	get_next_line(int fd, char **line)
 	{
 		buffer[read_bytes] = '\0';
 		tmp = ft_strjoin(heap[fd], buffer);
-		free_heap(&heap[fd]);
+		nullify_heap(&heap[fd]);
 		heap[fd] = tmp;
 	}
 	free(buffer);
