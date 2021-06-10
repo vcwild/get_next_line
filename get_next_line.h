@@ -21,8 +21,36 @@
  */
 int		get_next_line(int fd, char **line);
 
+/**
+ * @brief Allocates (with malloc(3)) and returns a newstring,
+ * which is the result of the concatenationof ’s1’ and ’s2’.
+ *
+ * @param s1 The prefix string
+ * @param s2 The suffix string
+ * @return char* Returns the new string or NULL if the allocation fails.
+ */
 char	*ft_strjoin(char const *s1, char const *s2);
 
+/**
+ * @brief Returns a pointer to a new string
+ * which is a duplicate of the string s.
+ *
+ * @param s1 Pointer to the start of the string do be copied
+ * @return char* On success, returns a pointer to the
+ * duplicated string. It returns NULL if insufficient memory
+ * was available, with errno set to indicate the cause of the
+ * error.
+ */
 char	*ft_strdup(const char *s1);
+
+/**
+ * @brief Allocates (with malloc(3)) and returns a substringfrom the string ’s’.
+ * The substring begins at index ’start’ and is ofmaximum size ’len’.
+ * @param s		The string from which to create the substring.
+ * @param start	The start index of the substring in the string’s’.
+ * @param len	The maximum length of the substring.
+ * @return char* Returns the substring. NULL if the allocation fails.
+*/
+char	*ft_substr(char const *s, unsigned int start, size_t len);
 
 #endif
