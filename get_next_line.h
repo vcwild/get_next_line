@@ -1,13 +1,13 @@
 #ifndef GET_NEXT_LINE_H
-
 # define GET_NEXT_LINE_H
-
-# define OPEN_MAX		_SC_OPEN_MAX
-# define BUFFER_SIZE	32
 
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>
+# include <sys/resource.h>
+
+# define OPEN_MAX		RLIMIT_NOFILE
+# define BUFFER_SIZE	42
 
 /**
  * @brief Write a function which returns a line

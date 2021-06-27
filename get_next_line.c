@@ -62,7 +62,7 @@ static int	get_line(int read_bytes, char **heap, char **line)
 		*heap = tmp;
 		return (1);
 	}
-	ft_strdel(heap);
+	nullify_heap(heap);
 	return (0);
 }
 
