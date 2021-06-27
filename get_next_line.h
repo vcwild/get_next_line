@@ -7,7 +7,6 @@
 # include <sys/resource.h>
 
 # define OPEN_MAX		RLIMIT_NOFILE
-# define BUFFER_SIZE	42
 
 /**
  * @brief Write a function which returns a line
