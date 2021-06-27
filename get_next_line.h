@@ -7,10 +7,6 @@
 # include <limits.h>
 # include <sys/resource.h>
 
-# ifndef BUFFER_SIZE
-# define BUFFER_SIZE 42
-# endif
-
 # define GNL_FOUND_LINEBREAK 1
 # define GNL_FOUND_EOF 0
 # define GNL_ERROR -1
