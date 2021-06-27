@@ -28,7 +28,7 @@ char	*ft_strdup(const char *s1)
 
 char	*ft_strcpy(char *dest, char *src)
 {
-	char *pos;
+	char	*pos;
 
 	pos = dest;
 	while (*src != '\0')
