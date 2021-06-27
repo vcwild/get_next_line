@@ -42,6 +42,19 @@ static char	*initialize_line_buffer(char *read_buffer, bool *is_linebreak)
 	return (line_buffer);
 }
 
+static void	set_null_line_break(char *linebreak_position,
+							 bool *is_linebreak,
+							 char *read_buffer)
+{
+	if (linebreak_position != NULL)
+	{
+		*is_linebreak = true;
+		*linebreak_position = '\0';
+		linebreak_position = ft_strchr(read_buffer, '\n');
+		ft_strcpy(read_buffer, linebreak_position + 1);
+	}
+}
+
 static char	*read_and_join(int fd,
 						   char *read_buffer,
 						   char *line_buffer,
@@ -59,32 +72,15 @@ static char	*read_and_join(int fd,
 			return (NULL);
 		}
 		read_buffer[bytes_read] = '\0';
-		if ((line_buffer = join_and_free(line_buffer, read_buffer)) == NULL)
+		line_buffer = join_and_free(line_buffer, read_buffer);
+		if (line_buffer == NULL)
 			return (NULL);
-		if ((linebreak_position = ft_strchr(line_buffer, '\n')) != NULL)
-		{
-			*is_linebreak = true;
-			*linebreak_position = '\0';
-			linebreak_position = ft_strchr(read_buffer, '\n');
-			ft_strcpy(read_buffer, linebreak_position + 1);
-		}
+		linebreak_position = ft_strchr(line_buffer, '\n');
+		set_null_line_break(linebreak_position, is_linebreak, read_buffer);
 		if (bytes_read == 0)
 			break ;
 	}
 	return (line_buffer);
-}
-
-static bool	bad_params(int file_descriptor, char **line)
-{
-	if (file_descriptor < 0)
-		return (true);
-	if (file_descriptor > MAX_FILE_DESCRIPTOR)
-		return (true);
-	if (BUFFER_SIZE <= 0)
-		return (true);
-	if (line == NULL)
-		return (true);
-	return (false);
 }
 
 int	get_next_line(int fd, char **line)
@@ -93,7 +89,7 @@ int	get_next_line(int fd, char **line)
 	char		*line_buffer;
 	bool		is_linebreak;
 
-	if (bad_params(fd, line))
+	if (fd < 0 || fd > MAX_FILE_DESCRIPTOR || BUFFER_SIZE <= 0 || line == NULL)
 		return (GNL_ERROR);
 	is_linebreak = false;
 	line_buffer = initialize_line_buffer(read_buffer, &is_linebreak);
